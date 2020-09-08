@@ -19,6 +19,7 @@ public class OtrosIP extends AppCompatActivity {
     private boolean conectado;
     private String ip;
     private int counter;
+    private InetAddress inetAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class OtrosIP extends AppCompatActivity {
         setContentView(R.layout.activity_otros_i_p_s);
         regresarButton2=findViewById(R.id.regresarButton2);
         hostsText=findViewById(R.id.hostsText);
-        counter=1;
+        counter=0;
 
         regresarButton2.setOnClickListener(
                 (v)-> finish()
@@ -34,27 +35,12 @@ public class OtrosIP extends AppCompatActivity {
 
         new Thread(
                 ()-> {
-                    try {
-                        barrido();
-                        ip= String.valueOf(counter);
-                        Log.e("hellou",ip);
-                        InetAddress inetAddress = InetAddress.getByName("192"+"168"+"0"+ip);
+                    barrido();
 
-                        Log.e("hellou",ip);
-                        conectado = inetAddress.isReachable(500);
-                        Log.e("contectado",""+conectado);
 
-                    } catch (
-                            UnknownHostException e) {
-                        e.printStackTrace();
-                    } catch (
-                            IOException e) {
-                        e.printStackTrace();
-                    }
 
                 }
         ).start();
-
 
     }
 
@@ -62,10 +48,25 @@ public class OtrosIP extends AppCompatActivity {
     public void barrido() {
 
 
-        for (int i = 1; i < 264; i++) {
+        for (int i = 0; i < 264; i++) {
                 counter += 1;
 //                Log.e("auida",""+counter);
+            ip= String.valueOf(counter);
+            try {
+                 inetAddress= InetAddress.getByName("192.168.0."+ip);
+                Log.e("hellou",ip);
+                conectado = inetAddress.isReachable(100);
+                Log.e("contectado",""+conectado);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }   catch (IOException e) {
+            e.printStackTrace();
+        }
+            if(conectado==true) {
+                hostsText.setText("192.168.0." + ip);
             }
+        }
+
 
         }
     }
