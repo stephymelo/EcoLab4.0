@@ -41,33 +41,52 @@ public class RecibidoActivity extends AppCompatActivity {
                 (v)-> finish()
                 );
 
-
+        textRecibe.setText(" ");
+        
         new Thread(
                 ()-> {
                     try {
-                        InetAddress inetAddress = InetAddress.getByName(ip);
-                        Log.e("hellou",ip);
-                        conectado = inetAddress.isReachable(500);
-                        Log.e("contectado",""+conectado);
-                        texto();
+                        for(int i=0;i<7;i++) {
+
+                            InetAddress inetAddress = InetAddress.getByName(ip);
+                            conectado = inetAddress.isReachable(500);
+                            Log.e("contectado", "" + conectado);
+                            texto();
+                            Thread.sleep(2000);
+                            i++;
+                        }
+
                     } catch (
                             UnknownHostException e) {
                         e.printStackTrace();
                     } catch (
                             IOException e) {
                         e.printStackTrace();
+                    } catch (InterruptedException l) {
+                      l.printStackTrace();
                     }
+
+
 
                 }
         ).start();
+
     }
 
 
    public void texto(){
         if(conectado==true){
-            textRecibe.setText("Recibido");
+            runOnUiThread(
+                    ()-> {
+                        textRecibe.append("\nConectado\n"+ip+textRecibe.getText().toString());
+                    }
+            );
         }else{
-            textRecibe.setText("Perdido");
+            runOnUiThread(
+                    ()-> {
+                        textRecibe.append("\nPerdido\n"+ip+textRecibe.getText().toString());
+                    }
+            );
         }
 
 }

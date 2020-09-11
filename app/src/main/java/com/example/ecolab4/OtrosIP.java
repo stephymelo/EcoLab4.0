@@ -48,7 +48,7 @@ public class OtrosIP extends AppCompatActivity {
     public void barrido() {
 
 
-        for (int i = 0; i < 264; i++) {
+        for (int i = 0; i < 255; i++) {
                 counter += 1;
 //                Log.e("auida",""+counter);
             ip= String.valueOf(counter);
